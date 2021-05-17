@@ -1,0 +1,11 @@
+type DeleteContentResponse {
+  ok: Boolean!
+  error: String
+}
+
+type Mutation{
+    DeleteContent(
+        tagId:Int!,
+        contentId:Int!
+    ): DeleteContentResponse
+}

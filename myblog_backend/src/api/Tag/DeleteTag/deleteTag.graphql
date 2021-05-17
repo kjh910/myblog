@@ -1,0 +1,10 @@
+type DeleteTagResponse {
+  ok: Boolean!
+  error: String
+}
+
+type Mutation{
+    DeleteTag(
+        tagId:Int!
+    ): DeleteTagResponse
+}

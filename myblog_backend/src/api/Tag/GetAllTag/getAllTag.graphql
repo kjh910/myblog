@@ -1,0 +1,9 @@
+type GetAllTagResponse {
+  ok: Boolean!
+  error: String
+  tags: [Tag]
+}
+
+type Query {
+  GetAllTag: GetAllTagResponse!
+}

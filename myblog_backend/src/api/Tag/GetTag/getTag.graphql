@@ -1,0 +1,9 @@
+type GetTagResponse {
+  ok: Boolean!
+  error: String
+  tag: Tag
+}
+
+type Query {
+  GetTag(tagId:Int!): GetTagResponse!
+}
