@@ -1,0 +1,86 @@
+type CreateContentResponse {
+  ok: Boolean!
+  error: String
+}
+
+type Mutation {
+  CreateContent(tagId: Int!, content: String!): CreateContentResponse
+  DeleteContent(tagId: Int!, contentId: Int!): DeleteContentResponse
+  UpdateContent(contentId: Int!, tagId: Int!, content: String!): UpdateContentResponse
+  CreateTag(tagName: String!): CreateTagResponse
+  DeleteTag(tagId: Int!): DeleteTagResponse
+  UpdateTag(tagId: Int!, tagName: String!): UpdateTagResponse
+}
+
+type DeleteContentResponse {
+  ok: Boolean!
+  error: String
+}
+
+type GetAllContentsResponse {
+  ok: Boolean!
+  error: String
+  contents: [Content]
+}
+
+type Query {
+  GetAllContents(tagId: Int): GetAllContentsResponse!
+  GetContent(tagId: Int!, contentId: Int!): GetContentResponse!
+  GetAllTag: GetAllTagResponse!
+  GetTag(tagId: Int!): GetTagResponse!
+}
+
+type GetContentResponse {
+  ok: Boolean!
+  error: String
+  content: Content
+}
+
+type Content {
+  id: Int!
+  content: String!
+  tagId: Int!
+  tag: Tag!
+  createdAt: String!
+  updatedAt: String
+}
+
+type UpdateContentResponse {
+  ok: Boolean!
+  error: String
+}
+
+type CreateTagResponse {
+  ok: Boolean!
+  error: String
+}
+
+type DeleteTagResponse {
+  ok: Boolean!
+  error: String
+}
+
+type GetAllTagResponse {
+  ok: Boolean!
+  error: String
+  tags: [Tag]
+}
+
+type GetTagResponse {
+  ok: Boolean!
+  error: String
+  tag: Tag
+}
+
+type Tag {
+  id: Int!
+  tagName: String!
+  contents: [Content]
+  createdAt: String!
+  updatedAt: String
+}
+
+type UpdateTagResponse {
+  ok: Boolean!
+  error: String
+}

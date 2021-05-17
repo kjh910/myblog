@@ -1,0 +1,8 @@
+type Content{
+    id:Int!
+    content:String!
+    tagId:Int!
+    tag:Tag!
+    createdAt: String!
+    updatedAt: String
+}

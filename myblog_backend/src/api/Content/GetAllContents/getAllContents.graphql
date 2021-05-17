@@ -1,0 +1,9 @@
+type GetAllContentsResponse {
+  ok: Boolean!
+  error: String
+  contents: [Content]
+}
+
+type Query {
+  GetAllContents(tagId:Int): GetAllContentsResponse!
+}

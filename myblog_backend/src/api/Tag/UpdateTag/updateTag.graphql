@@ -1,0 +1,11 @@
+type UpdateTagResponse {
+  ok: Boolean!
+  error: String
+}
+
+type Mutation{
+    UpdateTag(
+        tagId:Int!,
+        tagName:String!
+    ): UpdateTagResponse
+}
