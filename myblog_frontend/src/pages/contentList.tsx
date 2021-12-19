@@ -3,6 +3,8 @@ import { request } from "https";
 import React, { Fragment, useState } from "react";
 import { useParams } from "react-router";
 import { GetAllContents, GetAllContentsVariables } from "../__generated__/GetAllContents";
+import { Detail } from "./detail";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const GET_ALL_CONTENT = gql`
     query GetAllContents($tagId: Int){
@@ -43,12 +45,16 @@ export const ContentList = () => {
                                 <div className="w-40 h-24 ml-10">
                                     {contents?.id}
                                 </div>
+                                <>
                                 <div className="w-full pt-1">
-                                    {contents?.content}
+                                    <Link to="/detail" className="hover:opacity-75">
+                                        {contents?.content}
+                                    </Link>
                                     <div className="mr-3 text-xs text-gray-800">
                                         {contents?.tag.tagName}
                                     </div>
                                 </div>
+                                </>
                             </>
                         </div>
                     ))} 
