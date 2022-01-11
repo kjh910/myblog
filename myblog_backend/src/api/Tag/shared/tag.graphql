@@ -1,7 +1,0 @@
-type Tag{
-    id: Int!
-    tagName: String!
-    contents:[Content]
-    createdAt: String!
-    updatedAt: String
-}

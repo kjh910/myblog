@@ -1,47 +1,96 @@
 version: '3.8'
 
 services:
-  app:
-   build:
-     context: app/
-   container_name: myblog_app_$BRANCH_NAME
-   image: ${CONTAINER_REGISTORY_URL}myblog/app:$BRANCH_NAME
-   volumes:
-    - ./app/em:/home/web/em
-   ports:
-    - "9000:9000"
-   depends_on:
-    - db
-
-   db:
+  backend:
     build:
-       context: db/
-    container_name: myblog_db_$BRANCH_NAME
-    image: ${CONTAINER_REGISTORY_URL}myblog/db:$BRANCH_NAME
+      context: ./backend
+    container_name: myblog_backend
     volumes:
-     - ./app/em:/home/web/em
+      - ./backend/app:/app
+    # environment:
+    #   - BUILDKIT_STEP_LOG_MAX_SIZE=1073741824
+    # logging:
+    #   options:
+    #     max-size: 50m
     ports:
-     - 5432:5432"
-    environment:
-      TZ:'Asia/Tokyo'
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'postgres'
-      POSTGRES_INITID_ARGS: '--encoding=UTF-8 --locale-ja_JP.UTF-8'
-    volumes:
-      - ./db/data:/var/lib/postgresql/data
-      - ./db/init:/docker-entrypoint-initdb.d
+      - "6001:6001"
+    depends_on:
+      - db
+    networks:
+      - myblog
 
-    web:
-        build:
-           context: ./web
-        container_name: myblog_web_$BRANCH_NAME
-		image: ${CONTAINER_REGISTORY_URL}myblog/web:$BRANCH_NAME
-        ports:
-          - "8000:8000"
-        volumes:
-          - ./web/conf:/etc/nginx/conf.d
-          - ./web/uwsgi_params:/etc/nginx/uwsgi_params
-          - ./web/error_log/error.log:/var/log/nginx/error.log
-          - ./app/boovoice/static:/home/boovoice/static
-        depends_on:
-          - app
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #   container_name: myblog_fromend
+  #   volumes:
+  #     - ./frontend/app:/app
+  #   environment:
+  #     - BUILDKIT_STEP_LOG_MAX_SIZE=1073741824
+  #   ports:
+  #     - "7001:7001"
+  #   expose:
+  #     - "7001"
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - myblog
+
+  db:
+    build:
+      context: ./db
+    container_name: myblog_db
+    ports:
+      - "5432:5432"
+    environment:
+      DJANGO_DATABASE_HOSTNAME: db
+      DJANGO_DATABASE_PORT: 5432
+      POSTGRES_USER: "myblog"
+      POSTGRES_PASSWORD: "myblog"
+      POSTGRES_DB: "myblog"
+    volumes:
+      - ./db/lib/:/var/lib/postgresql/data
+    networks:
+      - myblog
+
+  # web:
+  #   build:
+  #     context: ./web
+  #   container_name: myblog_web
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     TZ: 'Asia/Tokyo'
+  #   volumes:
+  #     - ./web/conf:/etc/nginx/conf.d
+  #   depends_on:
+  #     - backend
+  #     - frontend
+  #   networks:
+  #     - myblog
+  
+  # rabbit:
+  #   environment:
+  #     - DEFAULT_USER=guest
+  #     - DEFAULT_PASS=guest
+  #   image: rabbitmq:3.9.12
+  #   container_name: myblog_rabbit
+  #   ports:
+  #     - "5673:5672" # we forward this port because it's useful for debugging
+  #     - "15673:15672" # here, we can access rabbitmq management plugin
+  #   networks:
+  #     - myblog
+
+  # redis:
+  #   image: redis:6.2.6
+  #   container_name: myblog_redis
+  #   ports:
+  #     - "6380:6380"
+  #   command: redis-server --requirepass sOmE_sEcUrE_pAsS
+  #   networks:
+  #     - myblog
+
+networks:
+  myblog:
+    name: myblog
+    driver: bridge

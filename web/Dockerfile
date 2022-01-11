@@ -1,5 +1,5 @@
-FROM centos:latest
+from nginx:1.21.5
 
-RUN dnf -y install nginx
+COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
 
-ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
+ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;"]
