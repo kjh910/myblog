@@ -7,8 +7,10 @@ services:
     container_name: myblog_backend
     volumes:
       - ./backend/app:/app
-    # environment:
-    #   - BUILDKIT_STEP_LOG_MAX_SIZE=1073741824
+    environment:
+      DJANGO_DATABASE_HOSTNAME: db
+      DJANGO_DATABASE_PORT: 5432
+
     # logging:
     #   options:
     #     max-size: 50m

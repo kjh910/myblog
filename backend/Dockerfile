@@ -8,7 +8,7 @@ ADD ./app /app/
 RUN pip install -r ${requirements}
 
 RUN apt update
-RUN apt install netcat-openbsd
+RUN apt install -y netcat
 
 EXPOSE 6001
 
