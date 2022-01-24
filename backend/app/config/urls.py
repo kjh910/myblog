@@ -18,6 +18,8 @@ from django.urls import path
 from drf_spectacular.views import SpectacularJSONAPIView,SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from django.urls import include
 
+from users import views as users_views
+
 from rest_framework import routers
 from users.views import CustomUserViewSet
 
@@ -32,7 +34,13 @@ urlpatterns = [
 urlpatterns += [
     path('', include('dj_rest_auth.urls')),
     path('registration/', include('dj_rest_auth.registration.urls')),
-    path('api/allauth/', include('allauth.urls')),
+    path('/social/', include('allauth.urls')),
+]
+
+urlpatterns += [
+    path('login/kakao/', users_views.KakaoLoginView().as_view(), name="kakao-login"),
+    path('login/kakao/callback/', users_views.KakaoCallbackView().as_view(), name="kakao-callback"),
+    path('login/kakao/finish/', users_views.KakaoLoginToDjango().as_view(), name="kakao-finish")
 ]
 
 urlpatterns += [
