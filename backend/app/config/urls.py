@@ -22,9 +22,17 @@ from users import views as users_views
 
 from rest_framework import routers
 from users.views import CustomUserViewSet
+from contents.views import ContentsViewSet, CategoriesViewSet
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
 
 router = routers.DefaultRouter()
 router.register(r'user', CustomUserViewSet)
+router.register(r'contents', ContentsViewSet)
+router.register(r'categories', CategoriesViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -32,7 +40,15 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+]
+
+urlpatterns += [
     path('', include('dj_rest_auth.urls')),
+    # path('login/test/', users_views.Login().as_view(), name="login"),
+    path('logout/test/', users_views.Logout().as_view(), name="logout"),
     path('registration/', include('dj_rest_auth.registration.urls')),
     path('/social/', include('allauth.urls')),
 ]

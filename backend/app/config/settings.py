@@ -85,7 +85,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -93,6 +93,14 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 REST_USE_JWT = True
+
+JWT_AUTH_COOKIE = 'access_token'
+# JWT_AUTH_REFRESH_COOKIE = "refresh_token"
+
+# JWT_AUTH_REFRESH_COOKIE = True
+# JWT_AUTH_HTTPONLY = True
+# JWT_AUTH_SECURE= 
+
 
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'users.serializers.CustomUserRegisterSerializer',
@@ -110,11 +118,11 @@ REST_AUTH_SERIALIZERS = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    'ROTATE_REFRESH_TOKENS': False,
+    'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-MIDDLEWARE = [
+DJANGO_MIDDELWARES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -122,7 +130,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'users.middlewares.MoveJWTCookieIntoTheBody',
+    'users.middlewares.MoveJWTRefreshCookieIntoTheBody',
 ]
+
+PROJECT_MIDDLEWARES = [
+    'users.middlewares.MoveJWTCookieIntoTheBody',
+    'users.middlewares.MoveJWTRefreshCookieIntoTheBody'
+]
+
+MIDDLEWARE = DJANGO_MIDDELWARES + PROJECT_MIDDLEWARES
 
 ROOT_URLCONF = 'config.urls'
 
