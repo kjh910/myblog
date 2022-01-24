@@ -4,9 +4,12 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from core import managers as core_managers
+from core import mixins as core_mixins
+from core import models as core_models
 
 
-class User(AbstractUser):
+
+class User(AbstractUser,core_mixins.SoftDeleteMixin,core_models.TimeStampedModel):
 
     """ Custom User Model """
 
