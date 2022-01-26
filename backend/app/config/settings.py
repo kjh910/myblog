@@ -18,7 +18,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-BASE_URL = os.getenv("BASE_URL","http://localhost:6001/")
+BASE_URL = os.getenv("BASE_URL","http://localhost:8001/")
 
 
 # Quick-start development settings - unsuitable for production
@@ -222,10 +222,10 @@ AUTH_USER_MODEL = "users.User"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 KAKAO_REST_API_KEY = os.getenv("KAKAO_REST_API_KEY", "")
-KAKAO_REDIRECT_URI = os.getenv("KAKAO_REDIRECT_URI", "")
+KAKAO_REDIRECT_URI = os.getenv("KAKAO_REDIRECT_URI", "http://localhost:8001/login/kakao/callback/")
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:7001',
+    os.getenv("FRONTEND_DOMAIN", "http://localhost:7001"),
 )
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8001", "http://localhost:7001"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8001"]
