@@ -8,8 +8,8 @@ services:
     volumes:
       - ./backend/app:/app
     environment:
-      DJANGO_DATABASE_HOSTNAME: db
-      DJANGO_DATABASE_PORT: 5432
+      DB_HOSTNAME: db
+      DB_PORT: 5432
     ports:
       - "6001:8001"
     expose:
@@ -82,8 +82,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      DJANGO_DATABASE_HOSTNAME: db
-      DJANGO_DATABASE_PORT: 5432
+      DB_HOSTNAME: db
+      DB_PORT: 5432
       POSTGRES_USER: "myblog"
       POSTGRES_PASSWORD: "myblog"
       POSTGRES_DB: "myblog"
