@@ -17,6 +17,7 @@ class ContentsSerializers(serializers.ModelSerializer):
          model = Contents
          fields = (
             "id",
+            "category",
             "content",
             "is_deleted",
          )

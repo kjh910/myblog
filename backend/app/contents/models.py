@@ -19,7 +19,7 @@ class Contents(core_models.TimeStampedModel,core_mixins.SoftDeleteMixin):
         verbose_name_plural = "Contents"
         
     category = models.ForeignKey(
-        Categories, related_name="category",blank=True, default="", on_delete=models.PROTECT
+        Categories, related_name="category", on_delete=models.PROTECT
     )
     content = models.CharField(
         "content", max_length=5000, blank=True, default=""
