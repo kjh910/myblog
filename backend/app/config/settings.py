@@ -228,4 +228,6 @@ CORS_ORIGIN_WHITELIST = (
     os.getenv("FRONTEND_DOMAIN", "http://localhost:7001"),
 )
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8001"]
+CSRF_TRUSTED_ORIGINS = [
+    os.getenv("BASE_URL","http://localhost:8001/")
+]
