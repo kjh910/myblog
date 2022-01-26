@@ -3,40 +3,77 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend
+      context: ./backend/app
     container_name: myblog_backend
     volumes:
       - ./backend/app:/app
     environment:
       DJANGO_DATABASE_HOSTNAME: db
       DJANGO_DATABASE_PORT: 5432
-
-    # logging:
-    #   options:
-    #     max-size: 50m
     ports:
-      - "6001:6001"
+      - "6001:8001"
+    expose:
+      - "6001"
+      - "8001"
+
     depends_on:
       - db
     networks:
       - myblog
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #   container_name: myblog_fromend
-  #   volumes:
-  #     - ./frontend/app:/app
-  #   environment:
-  #     - BUILDKIT_STEP_LOG_MAX_SIZE=1073741824
-  #   ports:
-  #     - "7001:7001"
-  #   expose:
-  #     - "7001"
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - myblog
+  frontend:
+    build:
+      context: ./frontend/app
+    container_name: myblog_frontend
+    volumes:
+      - ./frontend/app:/app
+    ports:
+      - "7001:9001"
+    expose:
+      - "7001"
+    depends_on:
+      - db
+      - backend
+    networks:
+      - myblog
+
+  backend_nginx:
+    build:
+      context: ./backend/nginx
+    container_name: myblog_backend_nginx
+    environment:
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./backend/nginx/conf:/etc/nginx/conf.d
+      - ./backend/app/static:/usr/share/nginx/static:ro
+    expose:
+      - "8001"
+      - "6001"
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db 
+      - backend
+    networks:
+      - myblog
+  
+  frontend_nginx:
+    build:
+      context: ./frontend/nginx
+    container_name: myblog_frontend_nginx
+    environment:
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./frontend/nginx/conf:/etc/nginx/conf.d
+    ports:
+      - "9001:9001"
+    expose:
+      - "9001"
+    depends_on:
+      - db 
+      - frontend
+    networks:
+      - myblog
 
   db:
     build:
@@ -54,22 +91,6 @@ services:
       - ./db/lib/:/var/lib/postgresql/data
     networks:
       - myblog
-
-  # web:
-  #   build:
-  #     context: ./web
-  #   container_name: myblog_web
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     TZ: 'Asia/Tokyo'
-  #   volumes:
-  #     - ./web/conf:/etc/nginx/conf.d
-  #   depends_on:
-  #     - backend
-  #     - frontend
-  #   networks:
-  #     - myblog
   
   # rabbit:
   #   environment:

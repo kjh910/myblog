@@ -1,13 +1,11 @@
-FROM node:16
+FROM node:17
 
 WORKDIR /app
 
-ADD ./app /app/
-
-RUN npm i
-RUN npm run build
+ADD . /app/
 
 EXPOSE 7001
+EXPOSE 9001
 
 RUN chmod 777 /app/runserver.sh
 

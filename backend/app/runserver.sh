@@ -13,4 +13,5 @@ python manage.py migrate
 python manage.py flush --noinput -v 2
 python manage.py loaddata init/fixtures.json
 python manage.py collectstatic --noinput
-python manage.py runserver 0.0.0.0:6001
+# python manage.py runserver 0.0.0.0:6001
+gunicorn --bind 0.0.0.0:6001 config.wsgi:application

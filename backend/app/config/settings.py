@@ -223,3 +223,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 KAKAO_REST_API_KEY = os.getenv("KAKAO_REST_API_KEY", "")
 KAKAO_REDIRECT_URI = os.getenv("KAKAO_REDIRECT_URI", "")
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:7001',
+)
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8001", "http://localhost:7001"]
