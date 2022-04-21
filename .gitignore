@@ -105,5 +105,6 @@ dist
 
 .vscode
 lib
+!/db/lib/.gitkeep
 __pycache__
 static
